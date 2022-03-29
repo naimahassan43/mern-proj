@@ -15,6 +15,7 @@ mongoose
 const User = require("./model/User");
 const Task = require("./model/Task");
 
+//Store the tasks
 app.post("/task", async (req, res) => {
   try {
     const task = new Task(req.body);
@@ -26,6 +27,7 @@ app.post("/task", async (req, res) => {
   }
 });
 
+//Store user info
 app.post("/user", async (req, res) => {
   try {
     const user = new User(req.body);
@@ -36,6 +38,13 @@ app.post("/user", async (req, res) => {
     return res.status(400).json({ success: false, message: err.message });
   }
 });
+
+//Fetch task data
+app.get("/task", async (req, res) => {
+  const tasks = await Task.find();
+  return res.json({ success: true, tasks });
+});
+//Fetch user data
 
 const port = process.env.PORT || 4040;
 app.listen(port, () => console.log(`Server is running at port ${port}`));
