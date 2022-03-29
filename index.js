@@ -57,6 +57,12 @@ app.get("/user", async (req, res) => {
   return res.json({ success: true, users });
 });
 
+//Fetch single user data
+app.get("/user/:id", async (req, res) => {
+  const user = await User.findById(req.params.id);
+  return res.json({ success: true, user });
+});
+
 const port = process.env.PORT || 4040;
 app.listen(port, () => console.log(`Server is running at port ${port}`));
 /*
