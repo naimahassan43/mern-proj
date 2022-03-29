@@ -39,12 +39,19 @@ app.post("/user", async (req, res) => {
   }
 });
 
-//Fetch task data
+//Fetch all task data
 app.get("/task", async (req, res) => {
   const tasks = await Task.find();
   return res.json({ success: true, tasks });
 });
-//Fetch user data
+
+//Fetch single task data
+app.get("/task/:id", async (req, res) => {
+  const task = await Task.findById(req.params.id);
+  return res.json({ success: true, task });
+});
+
+//Fetch all user data
 app.get("/user", async (req, res) => {
   const users = await User.find();
   return res.json({ success: true, users });
