@@ -48,6 +48,12 @@ app.get("/task", async (req, res) => {
 //Fetch single task data
 app.get("/task/:id", async (req, res) => {
   const task = await Task.findById(req.params.id);
+  if (!task) {
+    return res.status(404).json({
+      success: false,
+      message: "Task not found",
+    });
+  }
   return res.json({ success: true, task });
 });
 
@@ -60,7 +66,35 @@ app.get("/user", async (req, res) => {
 //Fetch single user data
 app.get("/user/:id", async (req, res) => {
   const user = await User.findById(req.params.id);
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: "User not found",
+    });
+  }
   return res.json({ success: true, user });
+});
+
+//Update user
+app.patch("/user/:id", async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+    return res.json({ success: true, user });
+  } catch (err) {
+    return res.status(400).json({
+      success: false,
+      message: err.message,
+    });
+  }
 });
 
 const port = process.env.PORT || 4040;
