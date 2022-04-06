@@ -119,6 +119,22 @@ app.patch("/task/:id", async (req, res) => {
   }
 });
 
+//Delete User
+app.delete("/user/:id", async (req, res) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+    return res.json({ success: true, user });
+  } catch (err) {
+    return res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 const port = process.env.PORT || 4040;
 app.listen(port, () => console.log(`Server is running at port ${port}`));
 /*
