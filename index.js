@@ -135,6 +135,22 @@ app.delete("/user/:id", async (req, res) => {
   }
 });
 
+//Delete Task
+app.delete("/task/:id", async (req, res) => {
+  try {
+    const task = await Task.findByIdAndDelete(req.params.id);
+    if (!task) {
+      return res.status(404).json({
+        success: false,
+        message: "Task not found",
+      });
+    }
+    return res.json({ success: true, task });
+  } catch (err) {
+    return res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 const port = process.env.PORT || 4040;
 app.listen(port, () => console.log(`Server is running at port ${port}`));
 /*
